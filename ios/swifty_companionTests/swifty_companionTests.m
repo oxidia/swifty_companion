@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface swifty_companionTests : XCTestCase
+@interface swiftycompanionTests : XCTestCase
 
 @end
 
-@implementation swifty_companionTests
+@implementation swiftycompanionTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL(^)(UIView *view))test
 {
