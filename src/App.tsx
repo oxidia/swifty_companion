@@ -1,23 +1,49 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, Text } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Login from "./screens/Login";
+import Search from "./screens/Search";
+import DisplayUser from "./screens/DisplayUser";
+import type { RegularUserType } from "./types/RegularUser";
+
+type SearchScreenParams = {
+  accessToken: string;
+  refreshToken: string;
+  accessTokenExpirationDate: string;
+};
+
+export type RootStackParamList = {
+  Login: undefined;
+  Search: SearchScreenParams;
+  DisplayUser: {
+    user: Record<string, unknown>;
+  };
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.text}>Hello world!</Text>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="Search" component={Search} />
+
+        <Stack.Screen
+          name="DisplayUser"
+          component={DisplayUser}
+          options={{
+            title: "Display user",
+            headerShown: false,
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  text: {
-    fontWeight: "bold",
-    fontSize: 40,
-    color: "#000",
-  },
-});

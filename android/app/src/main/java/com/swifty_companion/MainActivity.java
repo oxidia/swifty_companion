@@ -1,4 +1,4 @@
-package com.swifty_companion;
+package com.swiftycompanion;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
