@@ -1,9 +1,13 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { SafeAreaView } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { RootStackParamList } from "src/App";
 import Skill from "../components/Skill";
 
-export default function Skills(props: any) {
+type SkillsProps = NativeStackScreenProps<RootStackParamList, "Skills">;
+
+export default function Skills(props: SkillsProps) {
   const { maxLevel, skills } = props.route.params;
 
   return (
