@@ -15,6 +15,9 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: "center",
   },
+  disabled: {
+    backgroundColor: colors.gray,
+  },
 });
 
 export default styles;
