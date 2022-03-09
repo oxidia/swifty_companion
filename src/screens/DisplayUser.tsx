@@ -13,7 +13,7 @@ import {
 import Projects from "./Projects";
 import Skills from "./Skills";
 import { RegularUserType } from "src/types/RegularUser";
-// import rawContent from "./data-samples/regular-user-ybahlaou.json";
+import styles from "../styles/display-user.style";
 
 type DisplayUserProps = NativeStackScreenProps<
   RootStackParamList,
@@ -28,7 +28,7 @@ function DrawerContent(
   const { user, ...rest } = props;
 
   return (
-    <DrawerContentScrollView {...rest}>
+    <DrawerContentScrollView {...rest} style={styles.drawerContainer}>
       <Header
         displayName={user.displayName}
         login={user.login}
