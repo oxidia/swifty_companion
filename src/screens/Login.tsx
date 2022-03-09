@@ -3,9 +3,10 @@ import FastImage from "react-native-fast-image";
 import { authorize } from "react-native-app-auth";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../components/Button";
-import styles from "../styles/login.style";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import useAuth from "../hooks/useAuth";
 import { RootStackParamList } from "../App";
+import styles from "../styles/login.style";
 
 const config = {
   clientId: "<client id>",
@@ -23,15 +24,18 @@ type LoginProps = NativeStackScreenProps<RootStackParamList, "Login">;
 
 export default function Login(props: LoginProps) {
   const { navigation } = props;
+  const auth = useAuth();
 
   async function handleAuth() {
     try {
       const result = await authorize(config);
-      navigation.navigate("Search", {
-        accessToken: result.accessToken,
-        refreshToken: result.refreshToken,
-        accessTokenExpirationDate: result.accessTokenExpirationDate,
-      });
+      auth.setTokens(
+        result.accessToken,
+        result.refreshToken,
+        result.accessTokenExpirationDate,
+      );
+
+      navigation.navigate("Search");
     } catch (error) {
       console.log("ERROR", error);
     }
