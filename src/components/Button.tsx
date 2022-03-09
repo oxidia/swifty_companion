@@ -13,15 +13,27 @@ export type ButtonProps = {
   children: React.ReactNode;
   containerStyle?: StyleProp<ViewStyle>;
   texStyle?: StyleProp<ViewStyle>;
+  disabled?: boolean;
   onPress?: (event: GestureResponderEvent) => void;
 };
 
 export default function Button(props: ButtonProps) {
-  const { children, containerStyle, texStyle, onPress } = props;
+  const {
+    children,
+    disabled = false,
+    containerStyle,
+    texStyle,
+    onPress,
+  } = props;
 
   return (
     <TouchableOpacity
-      style={[styles.button, containerStyle]}
+      disabled={disabled}
+      style={[
+        styles.button,
+        containerStyle,
+        disabled ? styles.disabled : undefined,
+      ]}
       activeOpacity={0.8}
       onPress={onPress}>
       <Text style={[styles.text, texStyle]}>{children}</Text>
