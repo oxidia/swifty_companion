@@ -1,9 +1,14 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { FlatList, Modal, Text, View } from "react-native";
 import type { ProjectStatus, ProjectType } from "../types/RegularUser";
 import useBoolean from "../hooks/useBoolean";
-import Button from "./Button";
+import LoaderQuarterIcon from "./icons/LoaderQuarterIcon";
+import CheckIcon from "./icons/CheckIcon";
+import colors from "../styles/colors";
 import styles from "../styles/project.style";
+import UsersIcon from "./icons/UsersIcon";
+import ExternalLinkIcon from "./icons/ExternalLinkIcon";
+import ArrowLeftIcon from "./icons/ArrowLeftIcon";
 
 export type ProjectProps = ProjectType;
 
@@ -15,14 +20,14 @@ export default React.memo<ProjectProps>(function Project(props) {
     setTrue: showModal,
   } = useBoolean(false);
 
-  function getFormatedStatus(projectStatus: ProjectStatus): string | null {
+  function getFormatedStatus(projectStatus: ProjectStatus): ReactNode {
     switch (projectStatus) {
       case "finished":
-        return "Finished";
+        return <CheckIcon stroke={colors.green} />;
       case "in_progress":
-        return "In progress";
+        return <LoaderQuarterIcon stroke={colors.orange} />;
       case "searching_a_group":
-        return "Searching a group";
+        return <UsersIcon stroke={colors.primary} />;
       default:
         return null;
     }
@@ -31,7 +36,17 @@ export default React.memo<ProjectProps>(function Project(props) {
   return (
     <View style={[styles.container]}>
       <View style={styles.textContainer}>
-        <Text style={styles.nameText}>{name}</Text>
+        <Text style={styles.nameText}>
+          {name}
+          {projects.length > 0 ? (
+            <ExternalLinkIcon
+              onPress={showModal}
+              stroke={colors.primary}
+              width={20}
+              height={20}
+            />
+          ) : null}
+        </Text>
         {isMarked ? (
           <Text
             style={[
@@ -44,13 +59,10 @@ export default React.memo<ProjectProps>(function Project(props) {
       </View>
       <Text style={styles.statusText}>{getFormatedStatus(status)}</Text>
 
-      {projects.length > 0 ? (
-        <Text onPress={showModal}>Show projects</Text>
-      ) : null}
-
       <Modal visible={showModalValue}>
         <View>
-          <Button onPress={closeModal}>Close</Button>
+          <ArrowLeftIcon onPress={closeModal} stroke={colors.primary} />
+
           <FlatList
             keyExtractor={(project) => project.id.toString()}
             data={projects}
