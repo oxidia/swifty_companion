@@ -100,18 +100,18 @@ function createProjects(
 }
 
 function groupProjectsByParent(projects: ProjectType[]): ProjectType[] {
-  return projects.reduce(reducer, []).filter((cur) => cur.parentId == null);
+  return projects.reduce(reducer, []);
 
   function reducer(group: ProjectType[], current: ProjectType) {
-    const project = group.find(function isEqual(curProject) {
-      return curProject.id == current.parentId;
-    });
-
-    if (project) {
-      project.projects.push(current);
-    } else {
-      group.push(current);
+    if (current.parentId != null) {
+      return group;
     }
+
+    current.projects = projects.filter(
+      (project) => project.parentId == current.id,
+    );
+
+    group.push(current);
 
     return group;
   }
