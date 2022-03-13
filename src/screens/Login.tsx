@@ -6,17 +6,18 @@ import Button from "../components/Button";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import useAuth from "../hooks/useAuth";
 import { RootStackParamList } from "../App";
+import ftConfig from "../utils/config";
 import styles from "../styles/login.style";
 
 const config = {
-  clientId: "<client id>",
-  clientSecret: "<client secret>",
-  redirectUrl: "<callback uri>",
+  clientId: ftConfig.clientId,
+  clientSecret: ftConfig.clientSecret,
+  redirectUrl: ftConfig.redirectUrl,
   scopes: ["public"],
   serviceConfiguration: {
     authorizationEndpoint: "https://api.intra.42.fr/oauth/authorize",
     tokenEndpoint: "https://api.intra.42.fr/oauth/token",
-    // revocationEndpoint: "https://login.uber.com/oauth/v2/revoke",
+    // revocationEndpoint: "",
   },
 };
 

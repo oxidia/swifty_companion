@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Alert, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import axios from "axios";
 import Button from "../components/Button";
 import styles from "../styles/search.style";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../App";
 import { findUserByLogin } from "../api/fortyTwoApi";
-import axios from "axios";
+import { refreshAccessToken } from "../api/fortyTwoApi";
 import useAuth from "../hooks/useAuth";
 
 type SearchProps = NativeStackScreenProps<RootStackParamList, "Search">;
@@ -23,6 +24,7 @@ export default function Search(props: SearchProps) {
         setIsSubmiting(true);
         const user = await findUserByLogin(login, auth.accessToken);
         setIsSubmiting(false);
+
         navigation.navigate("DisplayUser", {
           user,
         });
@@ -30,8 +32,24 @@ export default function Search(props: SearchProps) {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const status = error.response?.status;
-        if (status) {
-          return Alert.alert("Info", `User '${login}' not found`);
+        if (status == 404) {
+          Alert.alert("Info", `User '${login}' not found`);
+          return setIsSubmiting(false);
+        } else if (status == 401 && auth.refreshToken) {
+          try {
+            const result = await refreshAccessToken(auth.refreshToken);
+
+            auth.setTokens(
+              result.accessToken,
+              result.refreshToken,
+              result.accessTokenExpirationDate,
+            );
+
+            return Alert.alert("Info", "Please retry");
+          } catch {
+            Alert.alert("Info", "Session expired");
+            return navigation.navigate("Login");
+          }
         }
       } else if (error instanceof Error) {
         console.log(error.message);
