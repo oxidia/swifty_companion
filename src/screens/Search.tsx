@@ -77,7 +77,7 @@ export default function Search(props: SearchProps) {
       <Button
         containerStyle={styles.button}
         onPress={onPressSearchHandler}
-        disabled={isSubmiting}>
+        disabled={isSubmiting || login.length == 0}>
         Search
       </Button>
     </SafeAreaView>
