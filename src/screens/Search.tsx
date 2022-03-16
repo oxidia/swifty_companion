@@ -45,7 +45,8 @@ export default function Search(props: SearchProps) {
               result.accessTokenExpirationDate,
             );
 
-            return Alert.alert("Info", "Please retry");
+            Alert.alert("Info", "Please retry");
+            return setIsSubmiting(false);
           } catch {
             Alert.alert("Info", "Session expired");
             return navigation.navigate("Login");
